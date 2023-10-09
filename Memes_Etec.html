@@ -1,0 +1,236 @@
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Memes Etec</title>
+                <style>
+                        body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f0f0f0;
+                                margin: 0;
+                                padding: 0;
+                        }
+
+                        .profile {
+                                max-width: 300px;
+                                margin: 0 auto;
+                                text-align: center;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 12px;
+                                box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.4);
+                        }
+
+                        .profile img {
+                                width: 200px;
+                                height: 200px;
+                                border-radius: 50%;
+                        }
+
+                        .profile h2 {
+                                font-size: 1.3rem;
+                                margin: 15px 0;
+                        }
+
+                        input {
+                                border: 2px solid #333;
+                                height: 30px;
+                                width: 100%;
+                                border-radius: 6px;
+                                padding: 5px;
+                                margin-bottom: 10px;
+                        }
+
+                        .post {
+                                max-width: 300px;
+                                margin: 20px auto;
+                                text-align: center;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 12px;
+                                box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.4);
+                        }
+
+                        .post h1 {
+                                font-family: arial;
+                                font-size: 1.4rem;
+                        }
+
+                        .post img {
+                                width: 100%;
+                                border-radius: 8px;
+                        }
+
+                        .post .actions {
+                                margin-top: 10px;
+                        }
+
+                        .post .actions button {
+                                background-color: transparent;
+                                border: none;
+                                cursor: pointer;
+                                margin-right: 20px;
+                                font-size: 20px;
+                        }
+
+                        .post:hover {
+                                box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.6);
+                        }
+
+                        p {
+                                font-size: 1.0rem;
+                                font-family: arial;
+                        }
+
+                        footer {
+                                height: 50px;
+                                width: auto;
+                                background-color: #333333;
+                                color: white;
+                                position: relative;
+                                bottom: 0px;
+                                border-radius: 12px 12px 0px 0px;
+                        }
+                        
+                        footer p {
+                                text-align: center;
+                                font-size: 12px;
+                                font-family: verdana;
+                        }
+                        footer button{
+                                background-color: #333333;
+                                border: none;
+                                border-radius: 12px 12px 0px 0px;
+                                color: #333
+                        }
+                </style>
+        </head>
+
+        <body>
+                <header>
+                        
+                </header>
+                <!-- Seu código HTML aqui... -->
+                <div class="profile">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1U6fbGQlyYNPg0DK-PmKnpEdnXa_2nt_3OQ&usqp=CAU"
+                                alt="Foto de Perfil">
+                        <h2>Dr. Domingos Minicucci Filho</h2>
+                </div>
+
+                <div class="post">
+                        <h1>nome</h1>
+                        <img src="" alt="MEME 1">
+                        <div class="actions">
+                                <button onclick="increaseLikes(this, 'post1')">❤️</button>
+                                <span id="post1Likes" class="likeCount">0</span>
+                        </div>
+                </div>
+
+                <div class="post">
+                        <h1>nome</h1>
+                        <img src="" alt="MEME 2">
+                        <div class="actions">
+                                <button onclick="increaseLikes(this, 'post2')">❤️</button>
+                                <span id="post2Likes" class="likeCount">0</span>
+                        </div>
+                </div>
+
+                <div class="post">
+                        <h1>nome</h1>
+                        <img src="" alt="MEME 3">
+                        <div class="actions">
+                                <button onclick="increaseLikes(this, 'post3')">❤️</button>
+                                <span id="post3Likes" class="likeCount">0</span>
+                        </div>
+                </div>
+                <!-- Outros posts aqui... -->
+                <footer>
+                        <button onclick="resetLikes()">Redefinir Curtidas</button>
+                        <p>Desenvolvido por &copy;Luiz Gustavo</p>
+                </footer>
+
+                <script>
+                
+                        // Resto do seu código JavaScript aqui...
+                        // Função para salvar as curtidas em um cookie
+                        function saveLikesToCookie(postId, likeCount) {
+                                // Define um cookie com o nome baseado no postId e o valor do contador de curtidas
+                                document.cookie = `${postId}_likes=${likeCount}`;
+                        }
+
+                        // Função para ler as curtidas de um cookie
+                        function readLikesFromCookie(postId) {
+                                // Verifica se há um cookie específico para o postId
+                                const likesCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith(`${postId}_likes=`));
+
+                                if (likesCookie) {
+                                        // Obtém o valor do cookie e retorna como número inteiro
+                                        return parseInt(likesCookie.split('=')[1]);
+                                }
+
+                                // Se não houver cookie, retorna 0
+                                return 0;
+                        }
+
+                        // Função para atualizar as curtidas a partir de um cookie
+                        function updateLikesFromCookie(postId) {
+                                const likeCount = readLikesFromCookie(postId);
+                                document.getElementById(`${postId}Likes`).textContent = likeCount;
+                        }
+
+                        // Função para aumentar as curtidas
+                        function increaseLikes(button, postId) {
+                                const likeCountElement = document.getElementById(`${postId}Likes`);
+                                let currentLikes = parseInt(likeCountElement.textContent);
+
+                                if (button.classList.contains("liked")) {
+                                        // Se o botão já foi "curtido", diminua o contador
+                                        likeCountElement.textContent = currentLikes - 1;
+                                } else {
+                                        // Se o botão ainda não foi "curtido", aumente o contador
+                                        likeCountElement.textContent = currentLikes + 1;
+                                }
+
+                                // Alterne a classe do botão para indicar se foi "curtido" ou não
+                                button.classList.toggle("liked");
+
+                                // Salva o contador de curtidas em um cookie específico para o postId
+                                saveLikesToCookie(postId, likeCountElement.textContent);
+                        }
+
+                        // Atualiza o contador de curtidas ao carregar a página para cada post
+                        window.onload = function () {
+                                updateLikesFromCookie('post1');
+                                updateLikesFromCookie('post2');
+                                updateLikesFromCookie('post3');
+                                // Atualize para outros posts, se necessário...
+                        };
+
+                        // Função para redefinir todas as curtidas e cookies
+                        function resetLikes() {
+                                // Redefina o contador de curtidas e o cookie para cada post
+                                resetPostLikes('post1');
+                                resetPostLikes('post2');
+                                resetPostLikes('post3');
+                                // Redefina para outros posts, se necessário...
+                        }
+
+                        // Função auxiliar para redefinir as curtidas e cookies de um post específico
+                        function resetPostLikes(postId) {
+                                const likeCountElement = document.getElementById(`${postId}Likes`);
+                                // Redefina o contador de curtidas
+                                likeCountElement.textContent = '0';
+                                // Remova o cookie relacionado ao post
+                                document.cookie = `${postId}_likes=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+                                // Remova a classe "liked" do botão
+                                const button = document.querySelector(`[onclick="increaseLikes(this, '${postId}')]`);
+                                if (button) {
+                                        button.classList.remove("liked");
+                                }
+                        }
+                </script>
+        </body>
+
+        </html>
